@@ -3,13 +3,9 @@ layout: default
 ---
 # Refactor it to be testable
 
-To make the code more testable we will need decouple the database code from the front-end code.
+To make the code more testable we will need decouple the database code from the front-end code. Which parts are which is really hard to determine at this stage!
 
-Which parts are which is really hard to determine at this stage!
-
-Let's start by creating testable database code to check if the query returns the right data.
-
-To do that we decouple the database code by creating a new module in a file `products-data-service.js`:
+Let's start by creating testable database code to check if the query returns the right data. To do that we decouple the database code by creating a new module in a file `products-data-service.js`:
 
 ```javascript
 module.exports = function(connection){
