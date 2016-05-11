@@ -44,6 +44,92 @@
     <main>
       <h1 id="the-future">The future</h1>
 
+<p>Once your codebase are using promises, you can start using co-routines, if you are using using a version of Node that support generators. Read more about generators <a href="https://www.promisejs.org/generators/">here</a> or <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Iterators_and_Generators#Generators">here</a>. Co-routines are an elegant way of handling callbacks using generators.</p>
+
+<p>Generators are a feature of <a href="https://babeljs.io/docs/learn-es2015/">ES6/ES2015</a> the new version of Javascript. Generators allows Javascript code to block and are supported from <a href="http://node.green">NodeJS 4.0 onwards</a>.</p>
+
+<p>You can install NodeJS 4.0 using [nvm])(https://github.com/creationix/nvm), which is the Node Version Management utility.</p>
+
+<p>To use co-routines look at <a href="https://www.npmjs.com/package/co">co npm module</a> or <a href="http://bluebirdjs.com/docs/api/promise.coroutine.html">bluebirds co-routine</a> support.</p>
+
+<p>This examples using Promises:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>    <span class="nx">userService</span>
+        <span class="p">.</span><span class="nx">findAllUsers</span><span class="p">()</span>
+        <span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">users</span><span class="p">){</span>
+            <span class="nx">res</span><span class="p">.</span><span class="nx">render</span><span class="p">(</span><span class="s1">'users'</span><span class="p">,</span> <span class="nx">users</span><span class="p">);</span>
+        <span class="p">})</span>
+        <span class="p">.</span><span class="k">catch</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">){</span>
+            <span class="nx">next</span><span class="p">(</span><span class="nx">err</span><span class="p">);</span>
+        <span class="p">});</span>
+
+</code></pre>
+</div>
+
+<p>Can refactored to use co-routines using <a href="https://www.npmjs.com/package/co">co</a> like this:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>    <span class="nx">co</span><span class="p">(</span><span class="kd">function</span><span class="o">*</span> <span class="p">(){</span>
+        <span class="k">try</span><span class="p">{</span>
+            <span class="kd">var</span> <span class="nx">users</span> <span class="o">=</span> <span class="k">yield</span> <span class="nx">userService</span><span class="p">.</span><span class="nx">findAllUsers</span><span class="p">();</span>
+            <span class="nx">res</span><span class="p">.</span><span class="nx">render</span><span class="p">(</span><span class="s1">'users'</span><span class="p">,</span> <span class="nx">user</span><span class="p">)</span>
+        <span class="p">}</span>
+        <span class="k">catch</span><span class="p">(</span><span class="nx">err</span><span class="p">){</span>
+            <span class="nx">next</span><span class="p">(</span><span class="nx">err</span><span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">});</span>
+</code></pre>
+</div>
+
+<h2 id="even-cleaner-database-connections-using-co-routines">Even cleaner database connections using Co-routines</h2>
+
+<p>Using the <code class="highlighter-rouge">connection-provider</code> module and co-routines together results in very readable code. Which almost doesn’t look asynchronous, but be careful as it is still asynchronous code.</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code><span class="nx">exports</span><span class="p">.</span><span class="nx">getProduct</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">,</span> <span class="nx">next</span><span class="p">){</span>
+
+    <span class="nx">co</span><span class="p">(</span><span class="kd">function</span><span class="o">*</span> <span class="p">(){</span>
+        <span class="kd">var</span> <span class="nx">services</span> <span class="o">=</span> <span class="k">yield</span> <span class="nx">req</span><span class="p">.</span><span class="nx">getServices</span><span class="p">();</span>
+        <span class="kd">var</span> <span class="nx">productId</span> <span class="o">=</span> <span class="nx">req</span><span class="p">.</span><span class="nx">params</span><span class="p">.</span><span class="nx">productId</span><span class="p">;</span>
+        <span class="kd">var</span> <span class="nx">productsDataService</span> <span class="o">=</span> <span class="nx">services</span><span class="p">.</span><span class="nx">productDataService</span><span class="p">;</span>
+        <span class="kd">var</span> <span class="nx">product</span> <span class="o">=</span> <span class="k">yield</span> <span class="nx">productsDataService</span><span class="p">.</span><span class="nx">getProduct</span><span class="p">(</span><span class="nx">productId</span><span class="p">);</span>
+        <span class="k">try</span><span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span><span class="nx">products</span> <span class="o">&amp;&amp;</span> <span class="nx">products</span><span class="p">.</span><span class="nx">length</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">){</span>
+                <span class="nx">res</span><span class="p">.</span><span class="nx">render</span><span class="p">(</span><span class="s1">'product'</span><span class="p">,</span> <span class="p">{</span><span class="na">products</span> <span class="p">:</span> <span class="nx">product</span><span class="p">});</span>
+            <span class="p">}</span>
+            <span class="k">else</span><span class="p">{</span>
+                <span class="nx">res</span><span class="p">.</span><span class="nx">render</span><span class="p">(</span><span class="s1">'product'</span><span class="p">,</span> <span class="p">{</span><span class="na">error</span> <span class="p">:</span> <span class="s1">'Product not found.'</span><span class="p">})</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+        <span class="k">catch</span><span class="p">(</span><span class="nx">err</span><span class="p">){</span>
+            <span class="nx">res</span><span class="p">.</span><span class="nx">render</span><span class="p">(</span><span class="s1">'product'</span><span class="p">,</span> <span class="p">{</span><span class="na">error</span> <span class="p">:</span> <span class="nx">err</span><span class="p">});</span>
+        <span class="p">}</span>
+    <span class="p">});</span>
+
+<span class="p">};</span>
+</code></pre>
+</div>
+
+<h2 id="multiple-callbacks">Multiple callbacks</h2>
+
+<p>Co-routines makes calling multiple asynchronous methods easier.</p>
+
+<p>Call multiple asynchronous like this:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>    <span class="nx">co</span><span class="p">(</span><span class="kd">function</span><span class="o">*</span> <span class="p">(){</span>
+        <span class="k">try</span><span class="p">{</span>
+            <span class="kd">var</span> <span class="nx">users</span> <span class="o">=</span> <span class="nx">userService</span><span class="p">.</span><span class="nx">findAllUsers</span><span class="p">();</span>
+            <span class="kd">var</span> <span class="nx">categories</span> <span class="o">=</span> <span class="nx">userService</span><span class="p">.</span><span class="nx">findAllCategories</span><span class="p">();</span>
+
+            <span class="kd">var</span> <span class="nx">results</span> <span class="o">=</span> <span class="k">yield</span> <span class="p">[</span><span class="nx">users</span><span class="p">,</span> <span class="nx">categories</span><span class="p">];</span>
+            <span class="c1">//[[user data], [category data]]</span>
+        <span class="p">}</span>
+        <span class="k">catch</span><span class="p">(</span><span class="nx">err</span><span class="p">){</span>
+            <span class="nx">next</span><span class="p">(</span><span class="nx">err</span><span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">});</span>
+
+</code></pre>
+</div>
+
     </main>
 
     <footer class="site-footer">
@@ -61,13 +147,16 @@
                 <li>
                     <a href="/steps/test_db_services_using_travis.html" >Test database services using Travis</a>
                 </li>
+                <li>
+                    <a href="/steps/better_database_connections.html" >Better database connections</a>
+                </li>
             </ul>
           </li>
           <li>
               <a href="/steps/promises.html" >Promises intro</a>
           </li>
           <li>
-            <a href="/steps/refactor_to_using_promises.html" >Refactor to using Promises</a>
+            <a href="/steps/refactor_to_using_promises.html" >Refactor to use Promises</a>
           </li>
           <li>
             <a href="/steps/the_future.html" class = "active">The future</a>

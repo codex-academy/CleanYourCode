@@ -1,7 +1,7 @@
 ---
 layout: default
 ---
-# Refactor it to be testable
+# Refactor to be testable
 
 To make the code more testable we will need decouple the database code from the front-end code.
 

@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Clean Code</title>
+  <meta name="description" content="">
+
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="canonical" href="/steps/better_database_connections.html">
+
+  <script>
+  WebFontConfig = {
+    google: {
+      families: ['Source Sans Pro:400,700']
+    }
+  };
+  </script>
+  <script src="https://ajax.googleapis.com/ajax/libs/webfont/1.5.18/webfont.js" async></script>
+</head>
+
+
+  <body>
+
+    <header class="site-header">
+  <nav class="site-nav">
+    <a href="/" class="logo"><img src="/img/codex-logo.png" alt="codeX"></a>
+    
+    <a href="#menu" class="menu">Menu &darr;</a>
+    
+
+    
+      
+      <h2>Clean Code</h2>
+      
+    
+  </nav>
+</header>
+
+
+    <main>
+      <h1 id="better-database-connections">Better database connections</h1>
+
+<p>The code is still coupled to the database due to the <code class="highlighter-rouge">req.getConnection</code> function call. It handles the database connection using the <code class="highlighter-rouge">express-myconnection</code> module with central database configuration in your <code class="highlighter-rouge">server.js</code> file.</p>
+
+<p>By using an alternative <code class="highlighter-rouge">connection-provider</code> module one can change this code to:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code><span class="nx">exports</span><span class="p">.</span><span class="nx">getProduct</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">,</span> <span class="nx">next</span><span class="p">){</span>
+    <span class="nx">req</span><span class="p">.</span><span class="nx">getServices</span><span class="p">()</span>
+        <span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">services</span><span class="p">){</span>
+            <span class="kd">var</span> <span class="nx">productId</span> <span class="o">=</span> <span class="nx">req</span><span class="p">.</span><span class="nx">params</span><span class="p">.</span><span class="nx">productId</span><span class="p">;</span>
+            <span class="c1">//we need a better way to do this</span>
+            <span class="kd">var</span> <span class="nx">productsDataService</span> <span class="o">=</span> <span class="nx">services</span><span class="p">.</span><span class="nx">productDataService</span><span class="p">;</span>
+            <span class="nx">productsDataService</span><span class="p">.</span><span class="nx">getProduct</span><span class="p">(</span><span class="nx">productId</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">product</span><span class="p">)</span> <span class="p">{</span>
+                <span class="k">if</span> <span class="p">(</span><span class="nx">product</span> <span class="o">&amp;&amp;</span> <span class="nx">product</span><span class="p">.</span><span class="nx">length</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">){</span>
+                    <span class="nx">res</span><span class="p">.</span><span class="nx">render</span><span class="p">(</span><span class="s1">'product'</span><span class="p">,</span> <span class="p">{</span><span class="na">product</span> <span class="p">:</span> <span class="nx">product</span><span class="p">});</span>
+                <span class="p">}</span>
+                <span class="k">else</span><span class="p">{</span>
+                    <span class="nx">res</span><span class="p">.</span><span class="nx">render</span><span class="p">(</span><span class="s1">'product'</span><span class="p">,</span> <span class="p">{</span><span class="na">error</span> <span class="p">:</span> <span class="s1">'Product not found.'</span><span class="p">})</span>
+                <span class="p">}</span>
+            <span class="p">})</span>
+        <span class="p">.</span><span class="k">catch</span><span class="p">(</span><span class="nx">err</span><span class="p">){</span>
+            <span class="nx">res</span><span class="p">.</span><span class="nx">render</span><span class="p">(</span><span class="s1">'product'</span><span class="p">,</span> <span class="p">{</span><span class="na">error</span> <span class="p">:</span> <span class="nx">err</span><span class="p">});</span>
+        <span class="p">};</span>
+    <span class="p">});</span>
+<span class="p">};</span>
+</code></pre>
+</div>
+
+<p>The code is decoupled from the database now. There is a new method on the http request object instance <code class="highlighter-rouge">req</code> giving access to the <code class="highlighter-rouge">productDataServices</code>. The front-end and the database concerns are now properly separated out.</p>
+
+<p>To use this approach you need to install a module called <code class="highlighter-rouge">connection-provider</code> and configure it with your database details.</p>
+
+<p>Install it like this: <code class="highlighter-rouge">npm install --save avermeulen/connection-provider</code>. This command adds <a href="https://github.com/avermeulen/connection-provider">André’s connection-provider</a> module to your project (by putting modules in your <code class="highlighter-rouge">node_modules</code> directory, and adding a line to your <code class="highlighter-rouge">package.json</code>).</p>
+
+<p>Configure it using in your <code class="highlighter-rouge">server.js</code> as follows:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">connectionProvider</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'connection-provider'</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">express</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'express'</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">ProductsDataService</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'products-data-service'</span><span class="p">);</span>
+
+<span class="kd">var</span> <span class="nx">app</span> <span class="o">=</span> <span class="nx">express</span><span class="p">();</span>
+
+<span class="kd">var</span> <span class="nx">dbOptions</span> <span class="o">=</span> <span class="p">{</span>
+      <span class="na">host</span><span class="p">:</span> <span class="s1">'localhost'</span><span class="p">,</span>
+      <span class="na">user</span><span class="p">:</span> <span class="s1">'user_name'</span><span class="p">,</span>
+      <span class="na">password</span><span class="p">:</span> <span class="s1">'password'</span><span class="p">,</span>
+      <span class="na">port</span><span class="p">:</span> <span class="mi">3306</span><span class="p">,</span>
+      <span class="na">database</span><span class="p">:</span> <span class="s1">'db_name'</span>
+<span class="p">};</span>
+
+<span class="c1">// create object instances that have a database connection</span>
+<span class="kd">var</span> <span class="nx">setupCallback</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">connection</span><span class="p">){</span>
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="c1">//this name should match the name exposed via the services object from req.services</span>
+        <span class="na">productDataService</span> <span class="p">:</span> <span class="k">new</span> <span class="nx">ProductsDataService</span><span class="p">(</span><span class="nx">connection</span><span class="p">)</span>
+        <span class="c1">//add the other data services here</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+
+<span class="nx">app</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="nx">connectionProvider</span><span class="p">(</span><span class="nx">dbOptions</span><span class="p">,</span> <span class="nx">setupCallback</span><span class="p">));</span>
+</code></pre>
+</div>
+
+    </main>
+
+    <footer class="site-footer">
+  <nav class="main-nav" id="menu">
+    <ul>
+          <li>
+            <a href="/steps/testable_code.html" >Testable Code</a>
+            <ul>
+                <li>
+                    <a href="/steps/go_refactor.html" >Go refactor</a>
+                </li>
+                <li>
+                    <a href="/steps/refactor_to_be_testable.html" >Refactor to be testable</a>
+                </li>
+                <li>
+                    <a href="/steps/test_db_services_using_travis.html" >Test database services using Travis</a>
+                </li>
+                <li>
+                    <a href="/steps/better_database_connections.html" class = "active">Better database connections</a>
+                </li>
+            </ul>
+          </li>
+          <li>
+              <a href="/steps/promises.html" >Promises intro</a>
+          </li>
+          <li>
+            <a href="/steps/refactor_to_using_promises.html" >Refactor to use Promises</a>
+          </li>
+          <li>
+            <a href="/steps/the_future.html" >The future</a>
+          </li>
+    </ul>
+  </nav>
+</footer>
+
+
+  </body>
+
+</html>

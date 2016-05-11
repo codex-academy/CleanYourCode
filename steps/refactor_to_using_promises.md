@@ -2,7 +2,7 @@
 layout: default
 ---
 
-# Refactor to using Promises
+# Refactor to use Promises
 
 You know everything now to refactor your database modules to use `Promises`. Replace any nested database callbacks with `join` function from `bluebird`.
 
