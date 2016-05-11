@@ -8,11 +8,11 @@ You came a long way! You started off by processing a CSV file and displaying the
 
 It's time now to stand back and review the code you wrote.
 
-Where is most of your code? How do the different parts of the code relate to each other? You probably have a `server.js` or `index.js` file.  What modules did you import that contain code for products, sales, or purchases, for example? Do you have a monster `server.js` or `index.js` file that contains everything? **Take a quick look?**
+Where is most of your code? How do the different parts of the code relate to each other? You probably have a `server.js` or `index.js` file.  What modules did you import that contain code for products, sales, or purchases, for example? Do you have a monster `server.js` or `index.js` file that contains everything? **Take a quick look.**
 
-## What is the prognosis?
+## What's the prognosis?
 
-Have you had a look now? How is it looking?
+How is it looking?
 
 Any monolithic pieces of code (i.e. big pieces that do a lot of things)? Or, even worse, one big piece of code that does everything?
 
@@ -25,5 +25,5 @@ One great way to improve your code is to do a Code Review with a partner. [Read 
 
 * Go and look at [refactoring](/steps/go_refactor.html).
 * Make sure your [code is testable](/steps/refactor_to_be_testable.html).
-* Then look at Promises for [a better way to handle callbacks](/steps/promises.html).
+* Look at Promises for [a better way to handle callbacks](/steps/promises.html).
 * Refactor your [database modules to use Promises](/steps/refactor_to_using_promises.html)

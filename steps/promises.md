@@ -28,13 +28,13 @@ This is pretty standard Node code but it can soon become messy. Luckily there is
 
 ## Promises
 
-[Promises](https://www.promisejs.org/) makes callbacks easier to work with they are also make your code more [composable](http://stackoverflow.com/questions/2887013/what-does-composability-mean-in-context-of-functional-programming/2887024#2887024).
+[Promises](https://www.promisejs.org/) make callbacks easier to work with. They also make your code more [composable](http://stackoverflow.com/questions/2887013/what-does-composability-mean-in-context-of-functional-programming/2887024#2887024).
 
 > A promise represents the eventual result of an asynchronous operation.
 
 There are various Promises modules we will be using. Let's look at [bluebird](https://github.com/petkaantonov/bluebird) first. You can install it from npm using `npm install bluebird`
 
-> Promises are natively supported in the newest version of Node JS (version 4) \o/
+> Promises are natively supported in the newest version of Node JS (from version 4) \o/
 
 Here's an example of reading files using a callback:
 
@@ -64,7 +64,7 @@ fs.readFileAsync('try_this.md', 'utf-8')
     });
 ```
 
-This code is much easier to read! We are calling `readFile` with a file name, the eventual result being the content of the file or an error. There are still callbacks, but the code flow much better.
+This code is much easier to read! We are calling `readFile` with a file name, the eventual result being the content of the file or an error. There are still callbacks, but the code flows much better.
 
 The code is using bluebird's promisification support. It can automatically create [promises from modules](https://github.com/petkaantonov/bluebird/blob/master/API.md#promisification) that follow the Node JS callback convention. We will also look at creating them manually, as we need Promises with constructor functions, which bluebird's promisification doesn't support.
 
