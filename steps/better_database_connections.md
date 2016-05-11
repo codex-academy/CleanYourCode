@@ -7,7 +7,7 @@ The code is still coupled to the database due to the `req.getConnection` functio
 
 By using an alternative `connection-provider` module one can change this code to:
 
-```javascript
+```javascriptconf
 exports.getProduct = function(req, res, next){
     req.getServices()
         .then(function(services){
@@ -35,7 +35,7 @@ To use this approach you need to install a module called `connection-provider` a
 
 Install it like this: `npm install --save avermeulen/connection-provider`. This command adds [André's connection-provider](https://github.com/avermeulen/connection-provider) module to your project (by putting modules in your `node_modules` directory, and adding a line to your `package.json`).
 
-Configure it using in your `server.js` as follows:
+Use it in your `server.js` as follows:
 
 ```javascript
 var connectionProvider = require('connection-provider');
