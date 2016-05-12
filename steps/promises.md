@@ -2,9 +2,9 @@
 layout: default
 ---
 
-# A better way of handling callbacks
+# Promises Intro
 
-Callbacks are an integral part of Node JS and you are using them on a daily basis. They can be a pain at times and can lead to code that is hard to read, especially when you have callbacks within callbacks.
+Callbacks are an integral part of Node JS and you are using them on a daily basis. They can be a pain at times and can lead to code that is hard to read, especially when you have callbacks within callbacks. [Promises](https://www.promisejs.org/) makes using callbacks easier.
 
 Look at the code below that reads two files asynchronously and prints their contents to the screen:
 
