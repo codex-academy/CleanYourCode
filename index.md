@@ -14,7 +14,7 @@ Where is most of your code? How do the different parts of the code relate to eac
 
 How is it looking?
 
-Any monolithic pieces of code (i.e. big pieces that do a lot of things)? Or, even worse, one big piece of code that does everything?
+Any monolithic pieces of code (that is: big pieces that do a lot of things)? Or, even worse, one big piece of code that does everything?
 
 If that is the case the first thing to do would be to split up your code up into smaller parts. Split up your code into modules that handle specific domains like products, sales, and categories. Decouple your code into logical components. This makes makes system maintenance much easier, and your code easier to understand.
 
