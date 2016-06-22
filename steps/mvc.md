@@ -8,13 +8,13 @@ The MVC (Model View Controller) pattern is popular in web apps. It lets you sepa
 
 ![](/img/MVC.png)
 
-**The Model handles the business logic**. It handles the data. It usually takes the form of a database.
+**The Model handles the business logic**. It handles the data. It can take care of database access itself or the model data can come from a Service Layer.
 
 **The Controller handles the interaction logic**. It process instructions and updates the Model and the View layers.
 
-**The View handles the UI logic**. It handles what the user sees.
+**The View handles the UI logic**. It handles what the user sees. This is usually a template.
 
-Often this is a "thin client": most things happen on the server. Some popular frameworks that work like that are Rails (Ruby), Django (Python), and Express (NodeJS). Some frameworks move more work to the client side (and are JavaScript-based), such Angular, Ember, and Backbone.
+Often the MVC pattern is used for "thin clients" where most things happen on the server. Some popular frameworks that work like that are Rails (Ruby), Django (Python), and Express (NodeJS). Some MVC frameworks move more work to the client side (and are JavaScript-based), such Angular, Ember, and Backbone.
 
 There are other kinds of pattern too, like MVVM (Model View ViewModel), MVP (Model View Presenter).
 
