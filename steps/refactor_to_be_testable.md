@@ -10,13 +10,11 @@ Let's start by creating testable database code to check if the query returns the
 ```javascript
 module.exports = function(connection){
     this.getProduct = function(productId, cb){
-        if (err) return cb(err, null);
         connection.query('select productName from products where productId = ?', productId, function(err, products){
+            if (err) return cb(err, null);
             if (products && products.length > 0){
                 return cb(null, products[0]);
             }
-            // to do: do we want to return null!
-            cb(null, null);
         });
     }
 }
