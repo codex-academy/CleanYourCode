@@ -7,7 +7,7 @@ The code is still coupled to the database due to the `req.getConnection` functio
 
 By using an alternative `connection-provider` module one can change this code to:
 
-```javascriptconf
+```javascript
 exports.getProduct = function(req, res, next){
     req.getServices()
         .then(function(services){
