@@ -56,7 +56,7 @@ var fs = require('fs');
 var Promise = require('bluebird');
 Promise.promisifyAll(fs);
 fs.readFileAsync('try_this.md', 'utf-8')
-    .then(function(err, content){
+    .then(function(content){
         console.log(content);
     })
     .catch(function(err){
