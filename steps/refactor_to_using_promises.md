@@ -6,7 +6,7 @@ layout: default
 
 We've now covered everything you need to know to refactor your database modules to use `Promises`. Replace any nested database callbacks with `join` function from `bluebird`.
 
-A simple wrapper around the MySQL code like this will serve you well:
+A wrapper around the MySQL code like this will serve you well:
 
 ```javascript
 var QueryBuilder = function(connection){

@@ -6,7 +6,7 @@ layout: default
 
 Once your codebase is using Promises you can start using co-routines, if you are using using a version of Node that supports generators. Read [more about generators on promisejs.org](https://www.promisejs.org/generators/) or [on MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Iterators_and_Generators#Generators). Co-routines are an elegant way of handling callbacks using generators.
 
-Generators are a feature of [ES6/ES2015](https://babeljs.io/docs/learn-es2015/): the new version of Javascript. Generators allow Javascript code to block and are supported from [NodeJS 4.0 onwards](http://node.green).
+Generators are a feature of [ES6/ES2015](https://babeljs.io/docs/learn-es2015/): the new version of JavaScript. Generators allow JavaScript code to block and are supported from [NodeJS 4.0 onwards](http://node.green).
 
 You can install NodeJS 4.0 using [nvm](https://github.com/creationix/nvm), the Node Version Management utility.
 
@@ -41,7 +41,7 @@ co(function* (){
 
 ## Even cleaner database connections using Co-routines
 
-Using the `connection-provider` module and co-routines together results in very readable code. This almost doesn't look asynchronous, but be careful as it **is** still asynchronous code.
+Using the `connection-provider` module and co-routines together results in readable code. This almost doesn't look asynchronous, but be careful as it **is** still asynchronous code.
 
 ```javascript
 exports.getProduct = function(req, res, next){

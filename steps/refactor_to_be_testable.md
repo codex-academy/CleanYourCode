@@ -3,7 +3,7 @@ layout: default
 ---
 # Refactor to be testable
 
-To make the code more testable we will need decouple the database code from the front-end code. Which parts are which is really hard to determine at this stage!
+To make the code more testable we will need decouple the database code from the front-end code. Which parts are which is really hard to figure out at this stage!
 
 Let's start by creating testable database code to check if the query returns the right data. To do that we decouple the database code by creating a new module in a file `products-data-service.js`:
 
@@ -22,7 +22,7 @@ module.exports = function(connection){
 
 Now we have a testable products database module.
 
-You can test it using [mocha](https://mochajs.org/) like this:
+You can test it using [Mocha](https://mochajs.org/) like this:
 
 ```javascript
 var ProductsDataService = require('products-data-service');
