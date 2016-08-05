@@ -14,13 +14,13 @@ It will also help you see different approaches to a problem, learn new tricks fr
 
 # How?
 
-Just like how we work in sprints, the best Code Reviews are short and happen often.
+Like how we work in sprints, the best Code Reviews are short and happen often.
 
 It's important to approach a Code Review with a positive attitude. We're aiming for constructive criticism of the code, not the person. It should be a blame-free process where you work together on improving the code. You should be looking for actual problems in the code, rather than worrying about your preferences or style choices.
 
 Pull Requests, like you do when you follow a [Git Flow process](https://github.com/codex-academy/GitFlowPractise/blob/master/README.md) are a great way of getting a Code Review from a peer.
 
-Using a checklist can make doing Code Reviews easier. The links in Further Reading below have a few in, of various sizes. Have a look at them and pick a few items to start your own checklist. Your list doesn't have to be very long to start with: you can always add to it later.
+Using a checklist can make doing Code Reviews easier. The links in Further Reading below have a few in, of various sizes. Have a look at them and pick a few items to start your own checklist. Your list doesn't have to be long to start with: you can always add to it later.
 
 
 # Further Reading

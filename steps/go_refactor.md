@@ -4,6 +4,7 @@ layout: default
 
 # Go refactor
 
+<!--codex ignore maintain-->
 Refactoring is the process of making your codebase better without changing its behaviour. It improves the way your code is written and it improves the structure. Refactoring makes it easier for future you and others to maintain and extend your code.
 
 Go ahead refactor your code by:

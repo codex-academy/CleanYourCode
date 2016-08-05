@@ -29,7 +29,7 @@ exports.getProduct = function(req, res, next){
 };
 ```
 
-The code is decoupled from the database now. There is a new method on the http request object instance `req` giving access to the `productDataServices`. The front-end and the database concerns are now properly separated out.
+The code is decoupled from the database now. There's a new method on the HTTP request object instance `req` giving access to the `productDataServices`. The front-end and the database concerns are now properly separated out.
 
 To use this approach you need to install a module called `connection-provider` and configure it with your database details.
 
