@@ -37,6 +37,6 @@ It's doing a lot, and it is hard to test! This code looks up things in the datab
 
 [Refactor to be testable](/steps/refactor_to_be_testable.html)
 
-[Test database services using Travis](/steps/test_db_services_using_travis.html)
+[Using a test database](/steps/using_a_test_database.html)
 
 Now let's look at making [better database connections](better-database-connections.md).
